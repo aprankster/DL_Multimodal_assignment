@@ -1,20 +1,48 @@
-from transformers import Blip2Processor, Blip2ForConditionalGeneration
-from PIL import Image
 import torch
+from PIL import Image
+from transformers import Blip2Processor, Blip2ForConditionalGeneration
 
-model_id = "Salesforce/blip2-flan-t5-base"
+# -----------------------------
+# Config
+# -----------------------------
+IMAGE_PATH = "image.jpg"
+MODEL_ID = "Salesforce/blip2-flan-t5-base"
 
-processor = Blip2Processor.from_pretrained(model_id)
+# -----------------------------
+# Load image
+# -----------------------------
+print("[Path3] Loading image...")
+image = Image.open(IMAGE_PATH).convert("RGB")
+
+# -----------------------------
+# Load unified multimodal model
+# -----------------------------
+print("[Path3] Loading unified multimodal model...")
+processor = Blip2Processor.from_pretrained(MODEL_ID)
+
 model = Blip2ForConditionalGeneration.from_pretrained(
-    model_id,
+    MODEL_ID,
     torch_dtype=torch.float16,
-    device_map="cuda"
+    device_map="auto"
 )
 
-image = Image.open("image.jpg")
-prompt = "Explain the scene."
+# -----------------------------
+# Inference
+# -----------------------------
+prompt = "Explain what is happening in this image."
+inputs = processor(
+    images=image,
+    text=prompt,
+    return_tensors="pt"
+).to(model.device)
 
-inputs = processor(images=image, text=prompt, return_tensors="pt").to("cuda")
-output = model.generate(**inputs, max_new_tokens=100)
+print("[Path3] Generating response...")
+outputs = model.generate(
+    **inputs,
+    max_new_tokens=100
+)
 
-print(processor.decode(output[0], skip_special_tokens=True))
+result = processor.decode(outputs[0], skip_special_tokens=True)
+
+print("\n[Path3] Output:")
+print(result)
