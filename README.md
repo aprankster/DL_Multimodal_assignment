@@ -48,7 +48,13 @@ python path1.py
 
 **Pipeline:**
 
-* Image encoder + language model via adapter layers (LLaVA-style)
+* Image is encoded using a vision encoder
+
+* Visual features are aligned with a language model via adapter layers
+
+* The language model generates a detailed textual description of the image
+
+**Model** `llava-hf/llava-1.5-7b-hf`
 
 **Input:** `image.jpg`
 
@@ -60,17 +66,27 @@ python path1.py
 python path2.py
 ```
 
+**Characteristics:**
+
+* Explicit multimodal alignment
+
+* Strong image understanding
+
+* More efficient than tool-based pipelines
 ---
 
 ### Path 3 — Unified Multimodal Model
 
 **Pipeline:**
 
-* Single pretrained vision-language model (BLIP-2)
+* A single pretrained model jointly processes visual and textual inputs
+* Vision and language reasoning occur within one unified architecture
+
+**Model** `Salesforce/blip2-flan-t5-base`
 
 **Input:** `image.jpg`
 
-**Output:** Textual reasoning about the image
+**Output:** Natural language explanation of the image
 
 **Run:**
 
@@ -125,6 +141,16 @@ Then accept the BLIP-2 license at:
 
 ---
 
+## Key Observations
+| Path   | Architecture             | Strengths                   | Limitations      |
+| ------ | ------------------------ | --------------------------- | ---------------- |
+| Path 1 | Tool-based pipeline      | Modular, interpretable      | Higher latency   |
+| Path 2 | Adapter-based VLM        | Strong multimodal alignment | Large model size |
+| Path 3 | Unified multimodal model | Simple end-to-end reasoning | Less modular     |
+
+---
+
 ## Conclusion
 
-This project highlights trade-offs between modularity, performance, and scalability in multimodal deep learning systems.
+This project demonstrates how different multimodal architectures trade off modularity, performance, and integration.
+By comparing tool-based pipelines, adapter-based vision–language models, and unified multimodal transformers, it highlights key design choices in modern multimodal systems.
