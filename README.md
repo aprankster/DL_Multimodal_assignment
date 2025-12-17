@@ -4,7 +4,6 @@
 
 This project demonstrates **three distinct multimodal deep learning architectures** for combining language, vision, and speech. Each architecture is implemented as a **standalone runnable script** and executed locally using an NVIDIA RTX 4060 GPU on WSL2.
 
-The goal of this project is to **compare architectural design choices**, not to train new models.
 
 ---
 
